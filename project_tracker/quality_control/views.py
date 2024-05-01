@@ -2,6 +2,8 @@ from django.http import HttpResponse
 
 from django.http import HttpResponse
 from django.urls import reverse
+from .models import BugReport, FeatureRequest
+
 
 def index(request):
     bug_list_url = reverse('quality_control:bug_list')
@@ -12,8 +14,15 @@ def index(request):
         <a href="{feature_list_url}">Запросы на улучшение</a>
     """)
 
+
 def bug_list(request):
-    return HttpResponse("<h1>Список отчетов об ошибках</h1>")
+    bugs = BugReport.objects.all()
+    bugs_html = "<h1>Список отчетов об ошибках</h1><ul>"
+    for bug in bugs:
+        bugs_html += f'<li><a href="{bug.id}/">{bug.title}</a></li>'
+    bugs_html += '</ul>'
+    return HttpResponse(bugs_html)
+
 
 def feature_list(request):
     return HttpResponse("<h1>Список запросов на улучшение</h1>")
@@ -25,4 +34,3 @@ def bug_detail(request, bug_id):
 
 def feature_detail(request, feature_id):
     return HttpResponse(f"Детали улучшения {feature_id}")
-

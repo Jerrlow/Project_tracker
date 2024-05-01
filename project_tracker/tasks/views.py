@@ -5,11 +5,9 @@ from django.shortcuts import get_object_or_404
 
 
 def index(request):
-    project_list_url = reverse('tasks:project_list')  # URL для "Список всех проектов"
+    projects_list_url = reverse('tasks:projects_list')
     quality_control_url = reverse('quality_control:index')  # URL для "Перейти в систему контроля качества"
-
-    link_html = f'<a href="{project_list_url}">Список всех проектов</a> | <a href="{quality_control_url}">Перейти в систему контроля качества</a>'
-
+    link_html = f'<a href="{projects_list_url}">Список всех проектов</a> | <a href="{quality_control_url}">Перейти в систему контроля качества</a>'
     return HttpResponse(f'<h1>Главная страница приложения Tasks</h1><p>{link_html}</p>')
 
 
