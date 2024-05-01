@@ -2,23 +2,33 @@ from django.urls import reverse
 from django.http import HttpResponse
 from .models import Project, Task
 from django.shortcuts import get_object_or_404
-
+from django.template.loader import render_to_string
+from django.shortcuts import render
 
 def index(request):
-    projects_list_url = reverse('tasks:projects_list')
-    quality_control_url = reverse('quality_control:index')  # URL для "Перейти в систему контроля качества"
-    link_html = f'<a href="{projects_list_url}">Список всех проектов</a> | <a href="{quality_control_url}">Перейти в систему контроля качества</a>'
-    return HttpResponse(f'<h1>Главная страница приложения Tasks</h1><p>{link_html}</p>')
+    return render(request, 'tasks/index.html')
+# def index(request):
+#     template = render_to_string('tasks/index.html')
+#     return HttpResponse(template)
 
+# def index(request):
+#     projects_list_url = reverse('tasks:projects_list')
+#     quality_control_url = reverse('quality_control:index')  # URL для "Перейти в систему контроля качества"
+#     link_html = f'<a href="{projects_list_url}">Список всех проектов</a> | <a href="{quality_control_url}">Перейти в систему контроля качества</a>'
+#     return HttpResponse(f'<h1>Главная страница приложения Tasks</h1><p>{link_html}</p>')
+
+
+# def projects_list(request):
+#     projects = Project.objects.all()
+#     projects_html = '<h1>Список проектов</h1><ul>'
+#     for project in projects:
+#         projects_html += f'<li><a href="{project.id}/">{project.name}</a></li>'
+#     projects_html += '</ul>'
+#     return HttpResponse(projects_html)
 
 def projects_list(request):
     projects = Project.objects.all()
-    projects_html = '<h1>Список проектов</h1><ul>'
-    for project in projects:
-        projects_html += f'<li><a href="{project.id}/">{project.name}</a></li>'
-    projects_html += '</ul>'
-    return HttpResponse(projects_html)
-
+    return render(request, 'tasks/projects_list.html', {'project_list': projects})
 
 def project_detail(request, project_id):
     project = get_object_or_404(Project, id=project_id)
