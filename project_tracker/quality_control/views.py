@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.http import HttpResponse
 from django.urls import reverse
 from .models import BugReport, FeatureRequest
+from django.shortcuts import get_object_or_404
+
 
 
 def index(request):
@@ -29,7 +31,24 @@ def feature_list(request):
 
 
 def bug_detail(request, bug_id):
-    return HttpResponse(f"Детали бага {bug_id}")
+    bug = get_object_or_404(BugReport, id=bug_id)
+
+    project_url = reverse('tasks:project_detail', args=[bug.project.id])
+    task_url = reverse('tasks:task_detail', args=[bug.project.id, bug.task.id])
+
+    response_html = f"<h1>Детали бага {bug.title}</h1>"
+    response_html += f"<p>Статус бага: <span style='color: red;'>{bug.status}</span></p>"
+    response_html += f"<p>Дата возникновения бага: <span style='color: red;'>{bug.created_at}</span></p>"
+    response_html += f"<p><strong>Подробнее:</strong></p>"
+
+    response_html += f"<p>Проект: <a href='{project_url}'>{bug.project.name}</a></p>"
+    response_html += f"<p>Описание проекта: {bug.project.description}</p>"
+    response_html += f"<p>Задача: <a href='{task_url}'>{bug.task.name}</a></p>"
+    response_html += f"<p>Описание задачи: {bug.task.description}</p>"
+    response_html += f"<p>Статус задачи: {bug.task.status}</p>"
+
+    return HttpResponse(response_html)
+
 
 
 def feature_detail(request, feature_id):
