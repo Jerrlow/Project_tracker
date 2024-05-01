@@ -9,7 +9,7 @@ class BugReport(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='New')
-    priority = models.IntegerField(choices=((1, 'Low'), (2, 'Medium'), (3, 'High'), (4, 'Critical'), (5, 'Blocker')))
+    priority = models.IntegerField(choices=((1, 'Low'), (2, 'Medium'), (3, 'High'), (4, 'Critical')))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
