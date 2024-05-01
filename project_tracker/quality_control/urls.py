@@ -2,6 +2,8 @@ from django.urls import path
 from quality_control import views
 from quality_control.views import bug_detail, feature_detail
 
+app_name = 'quality_control'
+
 
 urlpatterns = [
     path('', views.index, name='index'),

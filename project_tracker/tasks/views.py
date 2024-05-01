@@ -1,12 +1,8 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 from django.urls import reverse
+from django.http import HttpResponse
 
-
-def index(requests):
-    another_page_url = reverse('tasks:another_page')
-    html = f"<h1>Страница приложения tasks</h1><a href = '{another_page_url}'>Перейти на другую страницу</a>"
-    return HttpResponse(html)
-
-
-def another_page(request):
-    return HttpResponse("Это другая страница приложения tasks.")
+def index(request):
+    quality_control_url = reverse('quality_control:index')
+    link_html = f'<a href="{quality_control_url}">Перейти в систему контроля качества</a>'
+    return HttpResponse(f'<h1>Главная страница приложения Tasks</h1><p>{link_html}</p>')
