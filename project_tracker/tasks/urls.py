@@ -5,5 +5,9 @@ app_name = 'tasks'
 
 urlpatterns = [
     path('', views.index),
-    path('quality_control/', include('quality_control.urls'))
+    path('quality_control/', include('quality_control.urls')),
+    path('project_list/', views.project_list, name='project_list'),
 ]
+
+
+
