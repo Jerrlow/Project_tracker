@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from .models import BugReport, FeatureRequest
 from django.shortcuts import get_object_or_404
+from django.views.generic.base import View
 
 
 
@@ -27,7 +28,13 @@ def bug_list(request):
 
 
 def feature_list(request):
-    return HttpResponse("<h1>Список запросов на улучшение</h1>")
+    feature_requests = FeatureRequest.objects.all()
+    feature_requests_html = "<h1>Список запросов на улучшение</h1><ul>"
+    for feature_request in feature_requests:
+        feature_requests_html += f'<li><a href="{feature_request.id}/">{feature_request.title}</a></li>'
+    feature_requests_html += '</ul>'
+    return HttpResponse(feature_requests_html)
+
 
 
 def bug_detail(request, bug_id):
@@ -52,4 +59,18 @@ def bug_detail(request, bug_id):
 
 
 def feature_detail(request, feature_id):
-    return HttpResponse(f"Детали улучшения {feature_id}")
+    feature_request = get_object_or_404(FeatureRequest, id=feature_id)
+    project_url = reverse('tasks:project_detail', args=[feature_request.project.id])
+    task_url = reverse('tasks:task_detail', args=[feature_request.project.id, feature_request.task.id])
+    response_html = f"<h1>Детали улучшения {feature_request.title}</h1>"
+    response_html += f"<p>Статус: <span style='color: red;'>{feature_request.status}</span></p>"
+    response_html += f"<p>Приоритет: <span style='color: red;'>{feature_request.priority}</span></p>"
+    response_html += f"<p><strong>Подробнее:</strong></p>"
+    response_html += f"<p>Проект: <a href='{project_url}'>{feature_request.project.name}</a></p>"
+    response_html += f"<p>Описание проекта: {feature_request.project.description}</p>"
+    response_html += f"<p>Задача: <a href='{task_url}'>{feature_request.task.name}</a></p>"
+    response_html += f"<p>Описание задачи: {feature_request.task.description}</p>"
+    response_html += f"<p>Статус задачи: {feature_request.task.status}</p>"
+
+    return HttpResponse(response_html)
+
