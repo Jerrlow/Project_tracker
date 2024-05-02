@@ -8,15 +8,9 @@
 <body>
     <header>
         <!-- Общий заголовок для всех страниц -->
-        <h1>Проект project-tracker</h1>
+      <h1>Проект project-tracker</h1>
     </header>
-
-    <nav>
-        <!-- Навигационное меню -->
-        <a href="{% url 'tasks:index' %}">Приложение tasks</a>
-        <!-- Другие ссылки -->
-    </nav>
-
+    {% include 'base/nav.html' %}
     <main>
         {% block content %}
         <!-- Основное содержимое страницы -->
