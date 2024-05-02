@@ -10,4 +10,18 @@
     <p>Задача: <a href="{{ task_url }}">{{ feature_request.task.name }}</a></p>
     <p>Описание задачи: {{ feature_request.task.description }}</p>
     <p>Статус задачи: {{ feature_request.task.status }}</p>
+
+    <a href="{% url 'quality_control:feature_request_update' feature_request.id %}">
+        <button>Update</button>
+    </a>
+
+
+  <!-- Ссылка удаления проекта -->
+    <p><a href="{% url 'quality_control:feature_request_delete' feature_request.id %}"onclick="return confirm('Вы уверены, что хотите удалить этот запрос?');">Удалить запрос</a></p>
+
+
+    <a href="{% url 'quality_control:feature_list' %}">
+        <button>Back to Feature List</button>
+    </a>
+
 {% endblock %}

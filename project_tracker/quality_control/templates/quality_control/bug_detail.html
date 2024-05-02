@@ -12,4 +12,16 @@
     <p>Задача: <a href="{{ task_url }}">{{ bug.task.name }}</a></p>
     <p>Описание задачи: {{ bug.task.description }}</p>
     <p>Статус задачи: {{ bug.task.status }}</p>
+
+    <a href="{% url 'quality_control:bug_update' bug.id %}">
+        <button>Update</button>
+    </a>
+  <!-- Ссылка удаления проекта -->
+    <p><a href="{% url 'quality_control:bug_delete' bug.id %}"onclick="return confirm('Вы уверены, что хотите удалить этот баг?');">Удалить баг</a></p>
+
+
+    <a href="{% url 'quality_control:bug_list' %}">
+        <button>Back to Bug List</button>
+    </a>
+
 {% endblock %}
