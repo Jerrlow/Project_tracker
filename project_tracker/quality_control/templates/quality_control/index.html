@@ -1,0 +1,7 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+        <h1>Система контроля качества</h1>
+        <button onclick="location.href='{% url 'quality_control:bug_list' %}'" class="button">Список всех багов</button>
+        <button onclick="location.href='{% url 'quality_control:feature_list' %}'" class="button">Запросы на улучшение</button>
+{% endblock %}
