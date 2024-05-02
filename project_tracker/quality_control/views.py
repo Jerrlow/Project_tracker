@@ -109,3 +109,30 @@ def feature_detail(request, feature_id):
     return render(request, 'quality_control/feature_detail.html', context)
 
 
+from django.shortcuts import render, redirect
+from .forms import BugReportForm
+from .models import BugReport
+
+def bug_report_create(request):
+    if request.method == 'POST':
+        form = BugReportForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('quality_control:bug_list')
+    else:
+        form = BugReportForm()
+    return render(request, 'quality_control/bug_report_form.html', {'form': form})
+
+from .forms import FeatureRequestForm
+from .models import FeatureRequest
+
+def feature_request_create(request):
+    if request.method == 'POST':
+        form = FeatureRequestForm(request.POST)
+        if form.is_valid():
+            feature_request = form.save(commit=False)
+            feature_request.save()
+            return redirect('quality_control:feature_list')
+    else:
+        form = FeatureRequestForm()
+    return render(request, 'quality_control/feature_request_form.html', {'form': form})

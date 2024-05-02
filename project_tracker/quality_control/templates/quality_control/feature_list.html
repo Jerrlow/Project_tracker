@@ -7,4 +7,6 @@
             <li><a href="{% url 'quality_control:feature_detail' feature.id %}">{{ feature.title }}</a></li>
         {% endfor %}
     </ul>
+    <a href="{% url 'quality_control:feature_request_create' %}">Создать запрос на улучшение</a>
+
 {% endblock %}

@@ -4,6 +4,8 @@
     <h1>Детали бага {{ bug.title }}</h1>
     <p>Статус бага: <span style="color: red;">{{ bug.status }}</span></p>
     <p>Дата возникновения бага: <span style="color: red;">{{ bug.created_at }}</span></p>
+
+
     <p><strong>Подробнее:</strong></p>
     <p>Проект: <a href="{{ project_url }}">{{ bug.project.name }}</a></p>
     <p>Описание проекта: {{ bug.project.description }}</p>
