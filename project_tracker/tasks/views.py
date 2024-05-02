@@ -80,3 +80,60 @@ def add_task_to_project(request, project_id):
     else:
         form = TaskForm()
     return render(request, 'tasks/add_task.html', {'form': form, 'project': project})
+
+
+
+def update_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks:project_detail', project_id=project.id)
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'tasks/project_update.html', {'form': form, 'project': project})
+
+
+def update_task(request, project_id, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks:task_detail', project_id=project_id, task_id=task.id)
+    else:
+        form = TaskForm(instance=task)
+    return render(request, 'tasks/task_update.html', {'form': form, 'task': task})
+
+from django.views.generic import CreateView
+from django.urls import reverse, reverse_lazy
+
+class ProjectCreateView(CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = 'tasks/project_create.html'
+    success_url = reverse_lazy('tasks:projects_list')
+
+
+class TaskCreateView(CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'tasks/add_task.html'
+
+    def form_valid(self, form):
+        form.instance.project = get_object_or_404(Project, pk=self.kwargs['project_id'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('tasks:project_detail', kwargs={'project_id': self.kwargs['project_id']})
+
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    project.delete()
+    return redirect('tasks:projects_list')
+
+def delete_task(request, project_id, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    task.delete()
+    return redirect('tasks:project_detail', project_id=project_id)
