@@ -25,5 +25,6 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', include('tasks.urls')),
+    path('tasks/', include('tasks.urls', namespace='tasks')),
     path('quality_control/', include('quality_control.urls')),
 ]
